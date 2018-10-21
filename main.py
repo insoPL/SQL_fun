@@ -17,9 +17,6 @@
 #   tytul VARCHAR(100),
 #   PRIMARY KEY(lp));
 
-
-from class_style_mysql_connector import DatabaseHandler
-
 table = "wypozyczenia"
 
 data = list()
@@ -30,5 +27,6 @@ with open("data/"+table+".txt") as f_studenci:
         data.append(data_column)
 print(data)
 
-database = DatabaseHandler()
-database.insert_list(table, data)
+from wrapper_style_connector import insert_list
+
+insert_list('wypozyczenia', data)
