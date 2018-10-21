@@ -1,26 +1,34 @@
 # -*- coding: utf-8 -*-
 
 # CREATE TABLE studenci (
-#   pesel BIGINT NOT NULL,
-#   imie VARCHAR(20) NOT NULL,
-#   nazwisko VARCHAR(20) NOT NULL,
+#   pesel CHAR(11),
+#   imie VARCHAR(20),
+#   nazwisko VARCHAR(20),
 #   PRIMARY KEY(pesel));
 
-import json
-import pymysql
+# CREATE TABLE meldunek (
+#   pesel CHAR(11),
+#   id_pok VARCHAR(5),
+#   PRIMARY KEY(pesel));
 
-with open('database_keys.json') as f:
-    data = json.load(f)
-
-db = pymysql.connect(host=data["host"],
-                     user=data["user"],
-                     passwd=data["passwd"],
-                     db=data["db"])
-
-print(db.get_server_info())
-cur = db.cursor()
-
-cur.execute("SELECT Host,User FROM user")
+# CREATE TABLE wypozyczenia (
+#   lp VARCHAR(5),
+#   pesel CHAR(11),
+#   tytul VARCHAR(100),
+#   PRIMARY KEY(lp));
 
 
-db.close()
+from class_style_mysql_connector import DatabaseHandler
+
+table = "wypozyczenia"
+
+data = list()
+with open("data/"+table+".txt") as f_studenci:
+    for line in f_studenci:
+        line = line.strip()
+        data_column = line.split("\t")
+        data.append(data_column)
+print(data)
+
+database = DatabaseHandler()
+database.insert_list(table, data)

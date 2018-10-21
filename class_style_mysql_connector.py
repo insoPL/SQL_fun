@@ -2,6 +2,7 @@
 
 import json
 import pymysql
+import progressbar
 
 
 class DatabaseHandler:
@@ -23,6 +24,9 @@ class DatabaseHandler:
             with self.db.cursor() as cursor:
                 sql = "INSERT INTO %s VALUES (%s);" % (table_name, str_values)
                 cursor.execute(sql)
-                print(cursor.description)
         finally:
             self.db.commit()
+
+    def insert_list(self, table_name, data):
+        for foo in progressbar.progressbar(data):
+            self.insert(table_name, *foo)
