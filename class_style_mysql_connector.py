@@ -15,14 +15,9 @@ class DatabaseHandler:
                              db=data["db"])
 
     def insert(self, table_name, *values):
-        str_values = ""
-        for value in values:
-            str_values+= ", "
-            if isinstance(value, str):
-                str_values += "\'" + value + "\'"
-            else:
-                str_values += str(value)
-        str_values = str_values[2:]
+        str_values = "\'"
+        str_values += "\', \'".join(values)
+        str_values += "\'"
 
         try:
             with self.db.cursor() as cursor:
