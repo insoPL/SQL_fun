@@ -15,18 +15,19 @@ class DatabaseHandler:
                              passwd=data["passwd"],
                              db=data["db"])
 
+    def __del__(self):
+        self.db.close()
+
     def insert(self, table_name, *values):
         str_values = "\'"
         str_values += "\', \'".join(values)
         str_values += "\'"
 
-        try:
-            with self.db.cursor() as cursor:
-                sql = "INSERT INTO %s VALUES (%s);" % (table_name, str_values)
-                cursor.execute(sql)
-        finally:
-            self.db.commit()
+        with self.db.cursor() as cursor:
+            sql = "INSERT INTO %s VALUES (%s);" % (table_name, str_values)
+            cursor.execute(sql)
 
     def insert_list(self, table_name, data):
         for foo in progressbar.progressbar(data):
             self.insert(table_name, *foo)
+        self.db.commit()
