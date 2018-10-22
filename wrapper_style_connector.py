@@ -5,7 +5,10 @@ import progressbar
 import functools
 
 
-def _mysql_decorator(func):
+def mysql_decorator(func):
+    """
+    Decorates function with code that connects to mysql database. Connection class is passed as first argument to func.
+    """
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         with open('database_keys.json') as f:
@@ -26,7 +29,7 @@ def _mysql_decorator(func):
     return wrapper
 
 
-@_mysql_decorator
+@mysql_decorator
 def insert_list(db, table_name, data):
     """
     Inserts data to mysql database. Its not sonic but can do the trick for small datasets.
@@ -45,7 +48,7 @@ def insert_list(db, table_name, data):
             cursor.execute(sql)
 
 
-@_mysql_decorator
+@mysql_decorator
 def delete_data_of_table(db, table_name):
     """
     Delete all data from table
