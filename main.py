@@ -27,6 +27,13 @@ with open("data/"+table+".txt") as f_studenci:
         data.append(data_column)
 print(data)
 
-from wrapper_style_connector import insert_list
+from wrapper_style_connector import insert_list, delete_data_of_table
 
-insert_list('wypozyczenia', data)
+delete_data_of_table(table)
+insert_list(table, data)
+
+from class_style_mysql_connector import DatabaseHandler
+
+db = DatabaseHandler()
+db.delete_data_of_table(table)
+db.insert_list(table, data)

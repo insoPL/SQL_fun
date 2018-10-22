@@ -20,7 +20,7 @@ def _mysql_decorator(func):
         # eariler version injected db directly to func
         # I abonded it due to bad readability and messing with globals can easily backfire (threads etc)
 
-        func(*args, **kwargs)
+        func(db, *args, **kwargs)
         db.commit()
         db.close()
     return wrapper
@@ -30,10 +30,10 @@ def _mysql_decorator(func):
 def insert_list(db, table_name, data):
     """
     Inserts data to mysql database. Its not sonic but can do the trick for small datasets.
-    It takes 15 sec to make about 300 inserts. For bigger datasets better to go with file import.
+    It takes 15 sec to make about 300 inserts. For bigger datasets better go with file import.
 
     :param str table_name: Name of mysql table
-    :param list data: contin list of values. Values should also by a list
+    :param list data: Contains list of values. Values should also by a list
     """
     for foo in progressbar.progressbar(data):
         str_values = "\'"
@@ -46,10 +46,11 @@ def insert_list(db, table_name, data):
 
 
 @_mysql_decorator
-def drop_table(db, table_name):
+def delete_data_of_table(db, table_name):
     """
-    Drops table
+    Delete all data from table
 
     :param str table_name: Name of the table to drop.
     """
     db.cursor().execute("DELETE FROM %s;" % table_name)
+    print("Table %s has been cleared\n" % table_name)
