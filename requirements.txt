@@ -1,0 +1,4 @@
+###### Requirements ######
+PyMySQL
+progressbar2
+#sphinx
